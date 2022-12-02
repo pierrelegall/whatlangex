@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Pre-commit hook
+
+set -e
+
+STAGED_FILES=$(git diff --name-only --cached)
+
+mix test
+mix format --check-formatted $STAGED_FILES
