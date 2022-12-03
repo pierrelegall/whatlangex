@@ -1,21 +1,33 @@
-# Whatlang
+# Whatlangex
 
-**TODO: Add description**
+[Whatlang](https://github.com/greyblake/whatlang-rs) NIF bindings for Elixir.
+
+This package is in the early stage of development. API breaks incomin'!
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `whatlang` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `whatlangex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:whatlang, "~> 0.1.0"}
+    {:whatlangex, "~> 0.1.0"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/whatlang>.
+## How to use
 
+Detect a sentence language:
+
+```elixir
+iex> Whatlangex.detect("This is a cool sentence")
+"eng"
+```
+
+Get full language name (in english) from language code:
+
+```elixir
+iex> Whatlangex.code_to_name("eng")
+"English"
+```

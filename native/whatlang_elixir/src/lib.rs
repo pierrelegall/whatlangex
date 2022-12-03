@@ -20,4 +20,4 @@ fn code_to_name(code: &str) -> &str {
     }
 }
 
-rustler::init!("Elixir.Whatlang", [detect, code_to_name]);
+rustler::init!("Elixir.Whatlangex", [detect, code_to_name]);
