@@ -16,4 +16,12 @@ defmodule WhatlangTest do
   test "do not detect empty sentence" do
     assert Whatlang.detect("") == "?"
   end
+
+  test "code to name" do
+    assert Whatlang.code_to_name("eng") == "English"
+  end
+
+  test "code to name not found" do
+    assert Whatlang.code_to_name("abc") == "?"
+  end
 end

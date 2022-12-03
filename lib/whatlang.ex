@@ -18,4 +18,18 @@ defmodule Whatlang do
   def detect(_sentence) do
     :erlang.nif_error(:nif_not_loaded)
   end
+
+  @doc """
+  Get full language name (in english) from language code.
+
+  ## Examples
+
+      iex> Whatlang.code_to_name("eng")
+      "English"
+
+  """
+  @spec code_to_name(String.t()) :: String.t()
+  def code_to_name(_sentence) do
+    :erlang.nif_error(:nif_not_loaded)
+  end
 end

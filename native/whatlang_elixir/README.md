@@ -10,3 +10,10 @@ Detect a sentence language:
 iex> Whatlang.detect("This is a cool sentence")
 "eng"
 ```
+
+Get full language name (in english) from language code:
+
+```elixir
+iex> Whatlang.code_to_name("eng")
+"English"
+```
