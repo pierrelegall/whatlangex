@@ -1,5 +1,7 @@
-defmodule WhatlangTest do
+defmodule WhatlangexTest do
   use ExUnit.Case
+
+  import Whatlangex
 
   @sentences %{
     eng: "Start with a simple sentence, it's good enough for now.",
@@ -8,20 +10,20 @@ defmodule WhatlangTest do
   }
 
   test "detect language" do
-    assert Whatlang.detect(@sentences.eng) =~ ~r/.../
-    assert Whatlang.detect(@sentences.fra) =~ ~r/.../
-    assert Whatlang.detect(@sentences.eng) =~ ~r/.../
+    assert detect(@sentences.eng) =~ ~r/.../
+    assert detect(@sentences.fra) =~ ~r/.../
+    assert detect(@sentences.eng) =~ ~r/.../
   end
 
   test "do not detect empty sentence" do
-    assert Whatlang.detect("") == "?"
+    assert detect("") == "?"
   end
 
   test "code to name" do
-    assert Whatlang.code_to_name("eng") == "English"
+    assert code_to_name("eng") == "English"
   end
 
   test "code to name not found" do
-    assert Whatlang.code_to_name("abc") == "?"
+    assert code_to_name("abc") == "?"
   end
 end

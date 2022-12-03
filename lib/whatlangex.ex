@@ -1,16 +1,16 @@
-defmodule Whatlang do
+defmodule Whatlangex do
   @moduledoc """
   Documentation for `Whatlang`.
   """
 
-  use Rustler, otp_app: :whatlang, crate: "whatlang_elixir"
+  use Rustler, otp_app: :whatlangex, crate: "whatlang_elixir"
 
   @doc """
   Detect the language of the given sentence.
 
   ## Examples
 
-      iex> Whatlang.detect("This is a cool sentence.")
+      iex> detect("This is a cool sentence.")
       "eng"
 
   """
@@ -24,7 +24,7 @@ defmodule Whatlang do
 
   ## Examples
 
-      iex> Whatlang.code_to_name("eng")
+      iex> code_to_name("eng")
       "English"
 
   """

@@ -7,13 +7,13 @@
 Detect a sentence language:
 
 ```elixir
-iex> Whatlang.detect("This is a cool sentence")
+iex> Whatlangex.detect("This is a cool sentence")
 "eng"
 ```
 
 Get full language name (in english) from language code:
 
 ```elixir
-iex> Whatlang.code_to_name("eng")
+iex> Whatlangex.code_to_name("eng")
 "English"
 ```

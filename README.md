@@ -1,21 +1,21 @@
-# Whatlang
+# Whatlangex
 
 **TODO: Add description**
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `whatlang` to your list of dependencies in `mix.exs`:
+by adding `whatlangex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:whatlang, "~> 0.1.0"}
+    {:whatlangex, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/whatlang>.
+be found at <https://hexdocs.pm/whatlangex>.
 
