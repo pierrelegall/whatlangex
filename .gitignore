@@ -24,3 +24,6 @@ whatlang-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Generated bindings native code
+/priv/native
