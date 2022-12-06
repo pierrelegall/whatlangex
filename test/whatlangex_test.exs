@@ -5,27 +5,41 @@ defmodule WhatlangexTest do
 
   @sentences %{
     eng: "Start with a simple sentence, it's good enough for now.",
-    fra: "Commence avec une phrase simple, ça suffit.",
+    fra: "Commence avec une phrase simple, ça suffit four le moment.",
     spa: "Comience con una oración simple, es lo suficientemente bueno por ahora."
   }
 
-  test "detect language" do
-    for {_lang, sentence} <- @sentences do
-      {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
+  describe "#detect" do
+    test "detects return a language detection" do
+      for {_lang, sentence} <- @sentences do
+        {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
 
-      assert detection.lang =~ ~r/.../
+        assert detection.lang =~ ~r/.../
+      end
+    end
+
+    test "do not detect empty sentence" do
+      assert detect("") == :none
     end
   end
 
-  test "do not detect empty sentence" do
-    assert detect("") == :none
+  describe "#code_to_name" do
+    test "returns the full name of a language" do
+      assert code_to_name("fra") == {:ok, "Français"}
+    end
+
+    test "returns :none if language code is unknown" do
+      assert code_to_name("abc") == :not_found
+    end
   end
 
-  test "code to name" do
-    assert code_to_name("eng") == "English"
-  end
+  describe "#code_to_eng_name" do
+    test "returns the full name of a language" do
+      assert code_to_eng_name("eng") == {:ok, "English"}
+    end
 
-  test "code to name not found" do
-    assert code_to_name("abc") == "?"
+    test "returns :none if language code is unknown" do
+      assert code_to_eng_name("abc") == :not_found
+    end
   end
 end
