@@ -19,6 +19,14 @@ fn nif_code_to_name(code: &str) -> &str {
     }
 }
 
+#[rustler::nif]
+fn nif_code_to_eng_name(code: &str) -> &str {
+    match whatlang::Lang::from_code(code) {
+        Some(lang) => whatlang::Lang::eng_name(lang),
+        None => "?"
+    }
+}
+
 fn decode_info(info: whatlang::Info) -> NifInfo {
     (
         String::from(info.lang().code()),
@@ -27,4 +35,8 @@ fn decode_info(info: whatlang::Info) -> NifInfo {
     )
 }
 
-rustler::init!("Elixir.Whatlangex", [nif_detect, nif_code_to_name]);
+rustler::init!("Elixir.Whatlangex", [
+    nif_detect,
+    nif_code_to_name,
+    nif_code_to_eng_name
+]);

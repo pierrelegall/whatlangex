@@ -40,12 +40,12 @@ defmodule Whatlangex do
   end
 
   @doc """
-  Get full language name (in english) from language code.
+  Get full language name (native) from language code.
 
   ## Examples
 
-      iex> code_to_name("eng")
-      "English"
+      iex> code_to_eng_name("fra")
+      "Français"
 
   """
   @spec code_to_name(String.t()) :: String.t()
@@ -53,11 +53,29 @@ defmodule Whatlangex do
     nif_code_to_name(sentence)
   end
 
+  @doc """
+  Get full language name (in English) from language code.
+
+  ## Examples
+
+      iex> code_to_name("eng")
+      "English"
+
+  """
+  @spec code_to_eng_name(String.t()) :: String.t()
+  def code_to_eng_name(sentence) do
+    nif_code_to_eng_name(sentence)
+  end
+
   defp nif_detect(_sentence) do
     error_if_not_nif_loaded()
   end
 
   def nif_code_to_name(_sentence) do
+    error_if_not_nif_loaded()
+  end
+
+  def nif_code_to_eng_name(_sentence) do
     error_if_not_nif_loaded()
   end
 

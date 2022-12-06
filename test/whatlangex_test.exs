@@ -25,11 +25,21 @@ defmodule WhatlangexTest do
 
   describe "#code_to_name" do
     test "returns the full name of a language" do
-      assert code_to_name("eng") == "English"
+      assert code_to_name("fra") == "Français"
     end
 
     test "returns \"?\" if language code not found" do
       assert code_to_name("abc") == "?"
+    end
+  end
+
+  describe "#code_to_eng_name" do
+    test "returns the full name of a language" do
+      assert code_to_eng_name("eng") == "English"
+    end
+
+    test "returns \"?\" if language code not found" do
+      assert code_to_eng_name("abc") == "?"
     end
   end
 end
