@@ -9,23 +9,27 @@ defmodule WhatlangexTest do
     spa: "Comience con una oración simple, es lo suficientemente bueno por ahora."
   }
 
-  test "detect language" do
-    for {_lang, sentence} <- @sentences do
-      {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
+  describe "#detect" do
+    test "detects return a language detection" do
+      for {_lang, sentence} <- @sentences do
+        {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
 
-      assert detection.lang =~ ~r/.../
+        assert detection.lang =~ ~r/.../
+      end
+    end
+
+    test "do not detect empty sentence" do
+      assert detect("") == :none
     end
   end
 
-  test "do not detect empty sentence" do
-    assert detect("") == :none
-  end
+  describe "#code_to_name" do
+    test "returns the full name of a language" do
+      assert code_to_name("eng") == "English"
+    end
 
-  test "code to name" do
-    assert code_to_name("eng") == "English"
-  end
-
-  test "code to name not found" do
-    assert code_to_name("abc") == "?"
+    test "returns \"?\" if language code not found" do
+      assert code_to_name("abc") == "?"
+    end
   end
 end
