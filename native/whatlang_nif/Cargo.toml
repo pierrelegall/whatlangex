@@ -1,11 +1,11 @@
 [package]
-name = "whatlang_elixir"
+name = "whatlang_nif"
 version = "0.1.0"
 authors = []
 edition = "2018"
 
 [lib]
-name = "whatlang_elixir"
+name = "whatlang_nif"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 

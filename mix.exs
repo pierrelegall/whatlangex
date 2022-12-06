@@ -4,10 +4,19 @@ defmodule Whatlangex.MixProject do
   def project do
     [
       app: :whatlangex,
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: "Whatlang NIF bindings",
+      homepage_url: "https://github.com/pierrelegall/whatlangex",
+      package: [
+        maintainers: ["Pierre Le Gall"],
+        licenses: ["MIT"],
+        links: %{
+          "Github" => "https://github.com/pierrelegall/whatlangex"
+        }
+      ]
     ]
   end
 
@@ -21,6 +30,7 @@ defmodule Whatlangex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, ">= 0.29.0", only: :dev, runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:rustler, "~> 0.26.0"}
     ]

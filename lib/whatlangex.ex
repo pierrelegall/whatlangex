@@ -3,7 +3,7 @@ defmodule Whatlangex do
   Documentation for `Whatlang`.
   """
 
-  use Rustler, otp_app: :whatlangex, crate: "whatlang_elixir"
+  use Rustler, otp_app: :whatlangex, crate: "whatlang_nif"
 
   defmodule Detection do
     @moduledoc """
