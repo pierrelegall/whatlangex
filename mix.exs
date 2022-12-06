@@ -10,14 +10,18 @@ defmodule Whatlangex.MixProject do
       deps: deps(),
       description: "Whatlang NIF bindings",
       homepage_url: "https://github.com/pierrelegall/whatlangex",
-      package: [
-        maintainers: ["Pierre Le Gall"],
-        licenses: ["MIT"],
-        links: %{
-          "Github" => "https://github.com/pierrelegall/whatlangex"
-        },
-        files: ~w(lib priv native .formatter.exs mix.exs README* LICENSE* CHANGELOG*)
-      ]
+      package: package()
+    ]
+  end
+
+  def package() do
+    [
+      maintainers: ["Pierre Le Gall"],
+      licenses: ["MIT"],
+      links: %{
+        "Github" => "https://github.com/pierrelegall/whatlangex"
+      },
+      files: ~w(lib priv native .formatter.exs mix.exs README* LICENSE* CHANGELOG*)
     ]
   end
 
