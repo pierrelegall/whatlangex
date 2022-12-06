@@ -30,6 +30,7 @@ defmodule Whatlangex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, ">= 0.29.0", only: :dev, runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:rustler, "~> 0.26.0"}
     ]
