@@ -9,7 +9,7 @@ The package can be installed by adding `whatlangex` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:whatlangex, "~> 0.1.0"}
+    {:whatlangex, "~> 0.2.0"}
   ]
 end
 ```
