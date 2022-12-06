@@ -5,7 +5,7 @@ defmodule WhatlangexTest do
 
   @sentences %{
     eng: "Start with a simple sentence, it's good enough for now.",
-    fra: "Commence avec une phrase simple, ça suffit.",
+    fra: "Commence avec une phrase simple, ça suffit four le moment.",
     spa: "Comience con una oración simple, es lo suficientemente bueno por ahora."
   }
 
@@ -25,21 +25,21 @@ defmodule WhatlangexTest do
 
   describe "#code_to_name" do
     test "returns the full name of a language" do
-      assert code_to_name("fra") == "Français"
+      assert code_to_name("fra") == {:ok, "Français"}
     end
 
-    test "returns \"?\" if language code not found" do
-      assert code_to_name("abc") == "?"
+    test "returns :none if language code is unknown" do
+      assert code_to_name("abc") == :not_found
     end
   end
 
   describe "#code_to_eng_name" do
     test "returns the full name of a language" do
-      assert code_to_eng_name("eng") == "English"
+      assert code_to_eng_name("eng") == {:ok, "English"}
     end
 
-    test "returns \"?\" if language code not found" do
-      assert code_to_eng_name("abc") == "?"
+    test "returns :none if language code is unknown" do
+      assert code_to_eng_name("abc") == :not_found
     end
   end
 end

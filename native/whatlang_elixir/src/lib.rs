@@ -12,18 +12,18 @@ fn nif_detect(sentence: &str) -> Option<NifInfo> {
 }
 
 #[rustler::nif]
-fn nif_code_to_name(code: &str) -> &str {
+fn nif_code_to_name(code: &str) -> Option<&str> {
     match whatlang::Lang::from_code(code) {
-        Some(lang) => whatlang::Lang::name(lang),
-        None => "?"
+        Some(lang) => Some(whatlang::Lang::name(lang)),
+        None => None
     }
 }
 
 #[rustler::nif]
-fn nif_code_to_eng_name(code: &str) -> &str {
+fn nif_code_to_eng_name(code: &str) -> Option<&str> {
     match whatlang::Lang::from_code(code) {
-        Some(lang) => whatlang::Lang::eng_name(lang),
-        None => "?"
+        Some(lang) => Some(whatlang::Lang::eng_name(lang)),
+        None => None
     }
 }
 
