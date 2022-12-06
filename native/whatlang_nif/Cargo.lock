@@ -201,7 +201,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "whatlang_elixir"
+name = "whatlang_nif"
 version = "0.1.0"
 dependencies = [
  "rustler",
