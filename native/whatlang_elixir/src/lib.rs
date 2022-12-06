@@ -1,23 +1,30 @@
+use rustler;
 use whatlang;
 
-#[rustler::nif]
-fn detect(sentence: &str) -> &str {
-    let info = whatlang::detect(sentence);
+type NifInfo = (String, String, f64);
 
-    match info {
-        Some(i) => whatlang::Lang::code(&i.lang()),
-        None => "?"
+#[rustler::nif]
+fn nif_detect(sentence: &str) -> Option<NifInfo> {
+    match whatlang::detect(sentence) {
+        Some(info) => Some(decode_info(info)),
+        None => None
     }
 }
 
 #[rustler::nif]
-fn code_to_name(code: &str) -> &str {
-    let lang = whatlang::Lang::from_code(code);
-
-    match lang {
-        Some(l) => whatlang::Lang::name(l),
+fn nif_code_to_name(code: &str) -> &str {
+    match whatlang::Lang::from_code(code) {
+        Some(lang) => whatlang::Lang::name(lang),
         None => "?"
     }
 }
 
-rustler::init!("Elixir.Whatlangex", [detect, code_to_name]);
+fn decode_info(info: whatlang::Info) -> NifInfo {
+    (
+        String::from(info.lang().code()),
+        String::from(info.script().name()),
+        info.confidence() as f64
+    )
+}
+
+rustler::init!("Elixir.Whatlangex", [nif_detect, nif_code_to_name]);

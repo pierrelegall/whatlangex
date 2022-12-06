@@ -5,6 +5,20 @@ defmodule Whatlangex do
 
   use Rustler, otp_app: :whatlangex, crate: "whatlang_elixir"
 
+  defmodule Detection do
+    @moduledoc """
+    Module of the Detection type.
+    """
+
+    @type t :: %__MODULE__{
+            lang: String.t(),
+            script: String.t(),
+            confidence: Float.t()
+          }
+
+    defstruct [:lang, :script, :confidence]
+  end
+
   @doc """
   Detect the language of the given sentence.
 
@@ -14,9 +28,15 @@ defmodule Whatlangex do
       "eng"
 
   """
-  @spec detect(String.t()) :: String.t()
-  def detect(_sentence) do
-    :erlang.nif_error(:nif_not_loaded)
+  @spec detect(String.t()) :: {:ok, Detection.t()} | :none
+  def detect(sentence) do
+    case nif_detect(sentence) do
+      {lang, script, confidence} ->
+        {:ok, %Detection{lang: lang, script: script, confidence: confidence}}
+
+      nil ->
+        :none
+    end
   end
 
   @doc """
@@ -29,7 +49,19 @@ defmodule Whatlangex do
 
   """
   @spec code_to_name(String.t()) :: String.t()
-  def code_to_name(_sentence) do
+  def code_to_name(sentence) do
+    nif_code_to_name(sentence)
+  end
+
+  defp nif_detect(_sentence) do
+    error_if_not_nif_loaded()
+  end
+
+  def nif_code_to_name(_sentence) do
+    error_if_not_nif_loaded()
+  end
+
+  defp error_if_not_nif_loaded do
     :erlang.nif_error(:nif_not_loaded)
   end
 end
