@@ -7,7 +7,16 @@ defmodule Whatlangex.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: "Whatlang NIF bindings",
+      homepage_url: "https://github.com/pierrelegall/whatlangex",
+      package: [
+        maintainers: ["Pierre Le Gall"],
+        licenses: ["MIT"],
+        links: %{
+          "Github" => "https://github.com/pierrelegall/whatlangex"
+        }
+      ]
     ]
   end
 
