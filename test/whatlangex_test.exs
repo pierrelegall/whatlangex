@@ -10,13 +10,15 @@ defmodule WhatlangexTest do
   }
 
   test "detect language" do
-    assert detect(@sentences.eng) =~ ~r/.../
-    assert detect(@sentences.fra) =~ ~r/.../
-    assert detect(@sentences.eng) =~ ~r/.../
+    for {_lang, sentence} <- @sentences do
+      {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
+
+      assert detection.lang =~ ~r/.../
+    end
   end
 
   test "do not detect empty sentence" do
-    assert detect("") == "?"
+    assert detect("") == :none
   end
 
   test "code to name" do
