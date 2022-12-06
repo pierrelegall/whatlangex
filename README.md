@@ -2,8 +2,6 @@
 
 [Whatlang](https://github.com/greyblake/whatlang-rs) NIF bindings for Elixir.
 
-This package is in the early stage of development. API breaks incomin'!
-
 ## Installation
 
 The package can be installed by adding `whatlangex` to your list of dependencies in `mix.exs`:
@@ -18,16 +16,28 @@ end
 
 ## How to use
 
-Detect a sentence language:
+To detect the language of a sentence:
 
 ```elixir
-iex> Whatlangex.detect("This is a cool sentence")
-"eng"
+iex> detect("This is a nice sentence, don't you think?")
+{:ok,
+ %Whatlangex.Detection{
+   lang: "eng",
+   script: "Latin",
+   confidence: 0.5628587066030453
+ }}
 ```
 
-Get full language name (in english) from language code:
+To get full language name (in english) from language code:
 
 ```elixir
-iex> Whatlangex.code_to_name("eng")
+iex> code_to_eng_name("jap")
 "English"
+```
+
+Or in the native language:
+
+```elixir
+iex> code_to_eng_name("slv")
+"Slovenščina"
 ```
