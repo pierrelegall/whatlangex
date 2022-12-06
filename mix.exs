@@ -15,7 +15,8 @@ defmodule Whatlangex.MixProject do
         licenses: ["MIT"],
         links: %{
           "Github" => "https://github.com/pierrelegall/whatlangex"
-        }
+        },
+        files: ~w(lib priv native .formatter.exs mix.exs README* LICENSE* CHANGELOG*)
       ]
     ]
   end
