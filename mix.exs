@@ -21,7 +21,7 @@ defmodule Whatlangex.MixProject do
       links: %{
         "Github" => "https://github.com/pierrelegall/whatlangex"
       },
-      files: ~w(lib priv native .formatter.exs mix.exs README* LICENSE* CHANGELOG*)
+      files: package_files()
     ]
   end
 
@@ -39,5 +39,20 @@ defmodule Whatlangex.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:rustler, "~> 0.26.0"}
     ]
+  end
+
+  defp package_files do
+    ~w(
+      .formatter.exs
+      LICENSE
+      README.md
+      lib/
+      mix.exs
+      native/whatlang_nif/.cargo/
+      native/whatlang_nif/Cargo.lock
+      native/whatlang_nif/Cargo.toml
+      native/whatlang_nif/README.md
+      native/whatlang_nif/src/
+    )
   end
 end
