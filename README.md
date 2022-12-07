@@ -38,6 +38,6 @@ iex> code_to_eng_name("jap")
 Or in the native language:
 
 ```elixir
-iex> code_to_eng_name("slv")
+iex> code_to_name("slv")
 "Slovenščina"
 ```
