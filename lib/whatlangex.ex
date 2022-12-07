@@ -13,7 +13,7 @@ defmodule Whatlangex do
     @type t :: %__MODULE__{
             lang: String.t(),
             script: String.t(),
-            confidence: Float.t()
+            confidence: float
           }
 
     defstruct [:lang, :script, :confidence]
@@ -28,7 +28,7 @@ defmodule Whatlangex do
       "eng"
 
   """
-  @spec detect(String.t()) :: {:ok, Detection.t()} | :none
+  @spec detect(String.t) :: {:ok, Detection.t} | :none
   def detect(sentence) do
     case nif_detect(sentence) do
       nil ->
@@ -48,7 +48,7 @@ defmodule Whatlangex do
       "Français"
 
   """
-  @spec code_to_name(String.t()) :: {:ok, String.t()} | :not_found
+  @spec code_to_name(String.t) :: {:ok, String.t} | :not_found
   def code_to_name(sentence) do
     case nif_code_to_name(sentence) do
       nil -> :not_found
@@ -65,7 +65,7 @@ defmodule Whatlangex do
       "English"
 
   """
-  @spec code_to_eng_name(String.t()) :: {:ok, String.t()} | :not_found
+  @spec code_to_eng_name(String.t) :: {:ok, String.t} | :not_found
   def code_to_eng_name(sentence) do
     case nif_code_to_eng_name(sentence) do
       nil -> :not_found
