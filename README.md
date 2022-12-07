@@ -32,7 +32,7 @@ To get full language name (in english) from language code:
 
 ```elixir
 iex> code_to_eng_name("jap")
-"English"
+"Japanese"
 ```
 
 Or in the native language:
