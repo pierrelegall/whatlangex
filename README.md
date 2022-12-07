@@ -9,7 +9,7 @@ The package can be installed by adding `whatlangex` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:whatlangex, "~> 0.2.0"}
+    {:whatlangex, "~> 0.2.1"}
   ]
 end
 ```
@@ -32,12 +32,12 @@ To get full language name (in english) from language code:
 
 ```elixir
 iex> code_to_eng_name("jap")
-"English"
+"Japanese"
 ```
 
 Or in the native language:
 
 ```elixir
-iex> code_to_eng_name("slv")
+iex> code_to_name("slv")
 "Slovenščina"
 ```

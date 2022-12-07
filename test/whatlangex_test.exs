@@ -14,7 +14,7 @@ defmodule WhatlangexTest do
       for {_lang, sentence} <- @sentences do
         {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
 
-        assert detection.lang =~ ~r/.../
+        assert detection.lang =~ ~r/^...$/
         assert is_binary(detection.script)
         assert detection.confidence >= 0
         assert detection.confidence <= 1
