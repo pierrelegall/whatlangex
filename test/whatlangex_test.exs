@@ -28,7 +28,9 @@ defmodule WhatlangexTest do
 
   describe "#code_to_name" do
     test "returns the full name of a language" do
+      assert code_to_name("eng") == {:ok, "English"}
       assert code_to_name("fra") == {:ok, "Français"}
+      assert code_to_name("spa") == {:ok, "Español"}
     end
 
     test "returns :none if language code is unknown" do
@@ -39,6 +41,8 @@ defmodule WhatlangexTest do
   describe "#code_to_eng_name" do
     test "returns the full name of a language" do
       assert code_to_eng_name("eng") == {:ok, "English"}
+      assert code_to_eng_name("fra") == {:ok, "French"}
+      assert code_to_eng_name("spa") == {:ok, "Spanish"}
     end
 
     test "returns :none if language code is unknown" do
