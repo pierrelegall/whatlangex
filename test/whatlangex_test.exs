@@ -22,7 +22,7 @@ defmodule WhatlangexTest do
     end
 
     test "returns :none with an empty sentence" do
-      assert detect("") == :none
+      assert detect("") == :error
     end
   end
 
@@ -34,7 +34,7 @@ defmodule WhatlangexTest do
     end
 
     test "returns :none if language code is unknown" do
-      assert code_to_name("abc") == :not_found
+      assert code_to_name("abc") == :error
     end
   end
 
@@ -46,7 +46,7 @@ defmodule WhatlangexTest do
     end
 
     test "returns :none if language code is unknown" do
-      assert code_to_eng_name("abc") == :not_found
+      assert code_to_eng_name("abc") == :error
     end
   end
 end
