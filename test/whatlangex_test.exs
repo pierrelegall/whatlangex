@@ -9,8 +9,8 @@ defmodule WhatlangexTest do
     spa: "Comience con una oración simple, es lo suficientemente bueno por ahora."
   }
 
-  describe "#detect" do
-    test "detects return a language detection" do
+  describe "&detect/1" do
+    test "returns a language detection" do
       for {_lang, sentence} <- @sentences do
         {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
 
@@ -21,12 +21,12 @@ defmodule WhatlangexTest do
       end
     end
 
-    test "do not detect empty sentence" do
+    test "returns :none with an empty sentence" do
       assert detect("") == :none
     end
   end
 
-  describe "#code_to_name" do
+  describe "&code_to_name/1" do
     test "returns the full name of a language" do
       assert code_to_name("eng") == {:ok, "English"}
       assert code_to_name("fra") == {:ok, "Français"}
@@ -38,7 +38,7 @@ defmodule WhatlangexTest do
     end
   end
 
-  describe "#code_to_eng_name" do
+  describe "&code_to_eng_name/1" do
     test "returns the full name of a language" do
       assert code_to_eng_name("eng") == {:ok, "English"}
       assert code_to_eng_name("fra") == {:ok, "French"}
