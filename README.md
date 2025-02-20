@@ -2,6 +2,11 @@
 
 [Whatlang](https://github.com/greyblake/whatlang-rs) NIF bindings for Elixir.
 
+## Requirements
+
+- Elixir `1.15` or more
+- Erlang OTP `24` or more
+
 ## Installation
 
 The package can be installed by adding `whatlangex` to your list of dependencies in `mix.exs`:
