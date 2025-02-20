@@ -55,8 +55,8 @@ defmodule Whatlangex do
 
   """
   @spec code_to_name(String.t()) :: String.t() | nil
-  def code_to_name(sentence) do
-    nif_code_to_name(sentence)
+  def code_to_name(code) do
+    nif_code_to_name(code)
   end
 
   @doc """
@@ -72,19 +72,19 @@ defmodule Whatlangex do
 
   """
   @spec code_to_eng_name(String.t()) :: String.t() | nil
-  def code_to_eng_name(sentence) do
-    nif_code_to_eng_name(sentence)
+  def code_to_eng_name(code) do
+    nif_code_to_eng_name(code)
   end
 
   defp nif_detect(_sentence) do
     error_if_not_nif_loaded()
   end
 
-  defp nif_code_to_name(_sentence) do
+  defp nif_code_to_name(_code) do
     error_if_not_nif_loaded()
   end
 
-  defp nif_code_to_eng_name(_sentence) do
+  defp nif_code_to_eng_name(_code) do
     error_if_not_nif_loaded()
   end
 
