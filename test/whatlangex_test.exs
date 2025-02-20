@@ -12,8 +12,9 @@ defmodule WhatlangexTest do
   describe "&detect/1" do
     test "returns a language detection" do
       for {_lang, sentence} <- @sentences do
-        {:ok, %Whatlangex.Detection{} = detection} = detect(sentence)
+        detection = detect(sentence)
 
+        assert %Whatlangex.Detection{} = detection
         assert detection.lang =~ ~r/^...$/
         assert is_binary(detection.script)
         assert detection.confidence >= 0
@@ -21,32 +22,32 @@ defmodule WhatlangexTest do
       end
     end
 
-    test "returns :none with an empty sentence" do
-      assert detect("") == :error
+    test "returns `nil` with an empty sentence" do
+      assert detect("") == nil
     end
   end
 
   describe "&code_to_name/1" do
     test "returns the full name of a language" do
-      assert code_to_name("eng") == {:ok, "English"}
-      assert code_to_name("fra") == {:ok, "Français"}
-      assert code_to_name("spa") == {:ok, "Español"}
+      assert code_to_name("eng") == "English"
+      assert code_to_name("fra") == "Français"
+      assert code_to_name("spa") == "Español"
     end
 
     test "returns :none if language code is unknown" do
-      assert code_to_name("abc") == :error
+      assert code_to_name("abc") == nil
     end
   end
 
   describe "&code_to_eng_name/1" do
     test "returns the full name of a language" do
-      assert code_to_eng_name("eng") == {:ok, "English"}
-      assert code_to_eng_name("fra") == {:ok, "French"}
-      assert code_to_eng_name("spa") == {:ok, "Spanish"}
+      assert code_to_eng_name("eng") == "English"
+      assert code_to_eng_name("fra") == "French"
+      assert code_to_eng_name("spa") == "Spanish"
     end
 
     test "returns :none if language code is unknown" do
-      assert code_to_eng_name("abc") == :error
+      assert code_to_eng_name("abc") == nil
     end
   end
 end

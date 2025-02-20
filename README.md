@@ -24,25 +24,20 @@ end
 To detect the language of a sentence:
 
 ```elixir
-iex> detect("This is a nice sentence, don't you think?")
-{:ok,
- %Whatlangex.Detection{
-   lang: "eng",
-   script: "Latin",
-   confidence: 0.5628587066030453
- }}
+iex> Whatlangex.detect("¿Cómo te llamas?")
+%Whatlangex.Detection{
+  lang: "spa",
+  script: "Latin",
+  confidence: 0.6848222396112233
+}
 ```
 
-To get full language name (in english) from language code:
+To get the full language name from language code:
 
 ```elixir
-iex> code_to_eng_name("jap")
-"Japanese"
-```
+iex> Whatlangex.code_to_eng_name("spa")
+"Spanish"
 
-Or in the native language:
-
-```elixir
-iex> code_to_name("slv")
-"Slovenščina"
+iex> Whatlangex.code_to_name("spa")
+"Español"
 ```

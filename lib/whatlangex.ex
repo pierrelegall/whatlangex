@@ -25,20 +25,20 @@ defmodule Whatlangex do
   ## Examples
 
       iex> detect("This is a cool sentence.")
-      {:ok, %Whatlangex.Detection{lang: "eng", script: "Latin", confidence: 0.47970281937238757}}
+      %Whatlangex.Detection{lang: "eng", script: "Latin", confidence: 0.47970281937238757}
 
       iex> detect("")
-      :error
+      nil
 
   """
-  @spec detect(String.t()) :: {:ok, Detection.t()} | :none
+  @spec detect(String.t()) :: Detection.t() | nil
   def detect(sentence) do
     case nif_detect(sentence) do
       nil ->
-        :error
+        nil
 
       {lang, script, confidence} ->
-        {:ok, %Detection{lang: lang, script: script, confidence: confidence}}
+        %Detection{lang: lang, script: script, confidence: confidence}
     end
   end
 
@@ -48,18 +48,15 @@ defmodule Whatlangex do
   ## Examples
 
       iex> code_to_name("fra")
-      {:ok, "Français"}
+      "Français"
 
       iex> code_to_name("abc")
-      :error
+      nil
 
   """
-  @spec code_to_name(String.t()) :: {:ok, String.t()} | :not_found
+  @spec code_to_name(String.t()) :: String.t() | nil
   def code_to_name(sentence) do
-    case nif_code_to_name(sentence) do
-      nil -> :error
-      lang_name -> {:ok, lang_name}
-    end
+    nif_code_to_name(sentence)
   end
 
   @doc """
@@ -68,18 +65,15 @@ defmodule Whatlangex do
   ## Examples
 
       iex> code_to_eng_name("fra")
-      {:ok, "French"}
+      "French"
 
       iex> code_to_eng_name("abc")
-      :error
+      nil
 
   """
-  @spec code_to_eng_name(String.t()) :: {:ok, String.t()} | :not_found
+  @spec code_to_eng_name(String.t()) :: String.t() | nil
   def code_to_eng_name(sentence) do
-    case nif_code_to_eng_name(sentence) do
-      nil -> :error
-      lang_name -> {:ok, lang_name}
-    end
+    nif_code_to_eng_name(sentence)
   end
 
   defp nif_detect(_sentence) do
