@@ -43,7 +43,7 @@ defmodule Whatlangex do
   end
 
   @doc """
-  Get full language name (native) from language code.
+  Get the full language native name from language code.
 
   ## Examples
 
@@ -60,7 +60,7 @@ defmodule Whatlangex do
   end
 
   @doc """
-  Get full language name (in English) from language code.
+  Get the full language English name from language code.
 
   ## Examples
 
