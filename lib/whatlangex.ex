@@ -1,6 +1,6 @@
 defmodule Whatlangex do
   @moduledoc """
-  Documentation for `Whatlang`.
+  NIF bindings for Whatlang, a natural language detection library written in Rust.
   """
 
   use Rustler, otp_app: :whatlangex, crate: "whatlang_nif"
