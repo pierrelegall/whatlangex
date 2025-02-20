@@ -5,7 +5,7 @@ defmodule WhatlangexTest do
 
   @sentences %{
     eng: "Start with a simple sentence, it's good enough for now.",
-    fra: "Commence avec une phrase simple, ça suffit four le moment.",
+    fra: "Commence avec une phrase simple, ça suffit pour le moment.",
     spa: "Comience con una oración simple, es lo suficientemente bueno por ahora."
   }
 
