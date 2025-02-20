@@ -37,7 +37,7 @@ defmodule Whatlangex.MixProject do
     [
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:rustler, "~> 0.34"}
+      {:rustler, "0.36.1"}
     ]
   end
 
