@@ -7,7 +7,7 @@ defmodule Whatlangex do
 
   defmodule Detection do
     @moduledoc """
-    Module of the Detection type.
+    Struct representing a language detection result.
     """
 
     @type t :: %__MODULE__{
@@ -19,15 +19,18 @@ defmodule Whatlangex do
     defstruct [:lang, :script, :confidence]
   end
 
-  @default_detect_opts [
-    allowlist: nil,
-    denylist: nil
-  ]
+  defmodule DetectOpts do
+    @moduledoc """
+    Options for language detection filtering.
+    """
 
-  @default_detect_opts_tuple {
-    @default_detect_opts[:allowlist],
-    @default_detect_opts[:denylist]
-  }
+    @type t :: %__MODULE__{
+            allowlist: [String.t()] | nil,
+            denylist: [String.t()] | nil
+          }
+
+    defstruct allowlist: nil, denylist: nil
+  end
 
   @doc """
   Detect the language of the given sentence.
@@ -43,13 +46,7 @@ defmodule Whatlangex do
   """
   @spec detect(String.t()) :: Detection.t() | nil
   def detect(sentence) do
-    case nif_detect(sentence, @default_detect_opts_tuple) do
-      nil ->
-        nil
-
-      {lang, script, confidence} ->
-        %Detection{lang: lang, script: script, confidence: confidence}
-    end
+    nif_detect(sentence, %DetectOpts{})
   end
 
   @doc """
@@ -76,18 +73,12 @@ defmodule Whatlangex do
   """
   @spec detect(String.t(), keyword()) :: Detection.t() | nil
   def detect(sentence, opts) when is_list(opts) do
-    # Enough for now, but could be managed in a function later
-    # for more complex use cases.
-    allowlist = Keyword.get(opts, :allowlist)
-    denylist = Keyword.get(opts, :denylist)
+    options = %DetectOpts{
+      allowlist: Keyword.get(opts, :allowlist),
+      denylist: Keyword.get(opts, :denylist)
+    }
 
-    case nif_detect(sentence, {allowlist, denylist}) do
-      nil ->
-        nil
-
-      {lang, script, confidence} ->
-        %Detection{lang: lang, script: script, confidence: confidence}
-    end
+    nif_detect(sentence, options)
   end
 
   @doc """

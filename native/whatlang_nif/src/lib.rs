@@ -1,12 +1,30 @@
-use rustler;
+use rustler::NifStruct;
 use whatlang;
 
-type NifOptsInput = (Option<Vec<String>>, Option<Vec<String>>);
-type NifInfoOutput = (String, String, f64);
+#[derive(NifStruct)]
+#[module = "Whatlangex.DetectOpts"]
+struct DetectOpts {
+    allowlist: Option<Vec<String>>,
+    denylist: Option<Vec<String>>,
+}
+
+#[derive(NifStruct)]
+#[module = "Whatlangex.Detection"]
+struct Detection {
+    lang: String,
+    script: String,
+    confidence: f64,
+}
 
 #[rustler::nif]
-fn nif_detect(sentence: &str, opts: NifOptsInput) -> Option<NifInfoOutput> {
-    build_detector(opts).detect(sentence).map(decode_info)
+fn nif_detect(sentence: &str, options: DetectOpts) -> Option<Detection> {
+    build_detector(options)
+        .detect(sentence)
+        .map(|info| Detection {
+            lang: String::from(info.lang().code()),
+            script: String::from(info.script().name()),
+            confidence: info.confidence() as f64,
+        })
 }
 
 #[rustler::nif]
@@ -25,8 +43,8 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
     }
 }
 
-fn build_detector(opts: NifOptsInput) -> whatlang::Detector {
-    match opts {
+fn build_detector(options: DetectOpts) -> whatlang::Detector {
+    match (options.allowlist, options.denylist) {
         // Allowlist takes precedence
         (Some(codes), _) => {
             let langs = codes_to_langs(&codes);
@@ -46,7 +64,7 @@ fn build_detector(opts: NifOptsInput) -> whatlang::Detector {
             }
         }
         // Default: no filtering
-        _ => whatlang::Detector::new(),
+        (None, None) => whatlang::Detector::new(),
     }
 }
 
@@ -55,14 +73,6 @@ fn codes_to_langs(codes: &[String]) -> Vec<whatlang::Lang> {
         .iter()
         .filter_map(|code| whatlang::Lang::from_code(code))
         .collect()
-}
-
-fn decode_info(info: whatlang::Info) -> NifInfoOutput {
-    (
-        String::from(info.lang().code()),
-        String::from(info.script().name()),
-        info.confidence() as f64,
-    )
 }
 
 rustler::init!("Elixir.Whatlangex");
