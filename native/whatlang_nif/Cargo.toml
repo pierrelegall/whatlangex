@@ -2,7 +2,7 @@
 name = "whatlang_nif"
 version = "0.3.0"
 authors = []
-edition = "2021"
+edition = "2024"
 
 [lib]
 name = "whatlang_nif"
