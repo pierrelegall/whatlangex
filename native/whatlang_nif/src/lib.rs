@@ -45,6 +45,8 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
 
 fn build_detector(options: DetectOpts) -> whatlang::Detector {
     match (options.allowlist, options.denylist) {
+        // Default: no filtering
+        (None, None) => whatlang::Detector::new(),
         // Allowlist takes precedence
         (Some(codes), _) => {
             let langs = codes_to_langs(&codes);
@@ -63,8 +65,6 @@ fn build_detector(options: DetectOpts) -> whatlang::Detector {
                 whatlang::Detector::new()
             }
         }
-        // Default: no filtering
-        (None, None) => whatlang::Detector::new(),
     }
 }
 
