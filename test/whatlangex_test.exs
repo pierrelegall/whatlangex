@@ -97,6 +97,50 @@ defmodule WhatlangexTest do
     end
   end
 
+  describe "&detect/2 with both allowlist and denylist" do
+    test "allowlist takes precedence when both are provided" do
+      detection = detect(@sentences.eng, allowlist: ["eng", "fra"], denylist: ["eng", "spa"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "eng"
+    end
+
+    test "denylist is ignored when allowlist is present" do
+      detection = detect(@sentences.fra, allowlist: ["spa", "deu"], denylist: ["fra"])
+
+      assert detection == nil or detection.lang in ["spa", "deu"]
+    end
+
+    test "both empty lists behave as no filtering" do
+      detection = detect(@sentences.spa, allowlist: [], denylist: [])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "spa"
+    end
+
+    test "allowlist with value takes precedence over empty denylist" do
+      detection = detect(@sentences.eng, allowlist: ["eng", "fra"], denylist: [])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "eng"
+    end
+
+    test "empty allowlist with denylist value uses denylist" do
+      detection = detect(@sentences.fra, allowlist: [], denylist: ["eng", "spa"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "fra"
+    end
+
+    test "conflicting options with overlapping languages" do
+      detection =
+        detect(@sentences.fra, allowlist: ["eng", "fra", "spa"], denylist: ["fra", "deu"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "fra"
+    end
+  end
+
   describe "&code_to_name/1" do
     test "returns the full name of a language" do
       assert code_to_name("eng") == "English"
