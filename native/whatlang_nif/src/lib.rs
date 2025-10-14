@@ -1,12 +1,12 @@
 use rustler;
 use whatlang;
 
-type NifOptionsInput = (Option<Vec<String>>, Option<Vec<String>>);
+type NifOptsInput = (Option<Vec<String>>, Option<Vec<String>>);
 type NifInfoOutput = (String, String, f64);
 
 #[rustler::nif]
-fn nif_detect(sentence: &str, options: NifOptionsInput) -> Option<NifInfoOutput> {
-    build_detector(options).detect(sentence).map(decode_info)
+fn nif_detect(sentence: &str, opts: NifOptsInput) -> Option<NifInfoOutput> {
+    build_detector(opts).detect(sentence).map(decode_info)
 }
 
 #[rustler::nif]
@@ -25,8 +25,8 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
     }
 }
 
-fn build_detector(options: NifOptionsInput) -> whatlang::Detector {
-    match options {
+fn build_detector(opts: NifOptsInput) -> whatlang::Detector {
+    match opts {
         // Allowlist takes precedence
         (Some(codes), _) => {
             let langs = codes_to_langs(&codes);
