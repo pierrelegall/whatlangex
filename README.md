@@ -23,6 +23,8 @@ end
 
 ## How to use
 
+### Basic language detection
+
 To detect the language of a sentence:
 
 ```elixir
@@ -33,6 +35,24 @@ iex> Whatlangex.detect("¿Cómo te llamas?")
   confidence: 0.6848222396112233
 }
 ```
+
+### Language detection with filtering
+
+You can limit which languages to check using an allowlist or denylist:
+
+```elixir
+# Only check for specific languages
+iex> Whatlangex.detect("Hello world", allowlist: ["eng", "fra", "spa"])
+%Whatlangex.Detection{lang: "eng", script: "Latin", confidence: ...}
+
+# Exclude specific languages from detection
+iex> Whatlangex.detect("Bonjour le monde", denylist: ["eng", "deu"])
+%Whatlangex.Detection{lang: "fra", script: "Latin", confidence: ...}
+```
+
+**Note:** `allowlist` and `denylist` are mutually exclusive. If both are provided, only `allowlist` will be used.
+
+### Language code conversion
 
 To get the full language name from language code:
 

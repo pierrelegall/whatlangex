@@ -1,14 +1,12 @@
 use rustler;
 use whatlang;
 
-type NifInfo = (String, String, f64);
+type NifOptionsInput = (Option<Vec<String>>, Option<Vec<String>>);
+type NifInfoOutput = (String, String, f64);
 
 #[rustler::nif]
-fn nif_detect(sentence: &str) -> Option<NifInfo> {
-    match whatlang::detect(sentence) {
-        Some(info) => Some(decode_info(info)),
-        None => None,
-    }
+fn nif_detect(sentence: &str, options: NifOptionsInput) -> Option<NifInfoOutput> {
+    build_detector(options).detect(sentence).map(decode_info)
 }
 
 #[rustler::nif]
@@ -27,7 +25,39 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
     }
 }
 
-fn decode_info(info: whatlang::Info) -> NifInfo {
+fn build_detector(options: NifOptionsInput) -> whatlang::Detector {
+    match options {
+        // Allowlist takes precedence
+        (Some(codes), _) => {
+            let langs = codes_to_langs(&codes);
+            if !langs.is_empty() {
+                whatlang::Detector::with_allowlist(langs)
+            } else {
+                whatlang::Detector::new()
+            }
+        }
+        // Denylist if no allowlist
+        (None, Some(codes)) => {
+            let langs = codes_to_langs(&codes);
+            if !langs.is_empty() {
+                whatlang::Detector::with_denylist(langs)
+            } else {
+                whatlang::Detector::new()
+            }
+        }
+        // Default: no filtering
+        _ => whatlang::Detector::new(),
+    }
+}
+
+fn codes_to_langs(codes: &[String]) -> Vec<whatlang::Lang> {
+    codes
+        .iter()
+        .filter_map(|code| whatlang::Lang::from_code(code))
+        .collect()
+}
+
+fn decode_info(info: whatlang::Info) -> NifInfoOutput {
     (
         String::from(info.lang().code()),
         String::from(info.script().name()),

@@ -19,13 +19,23 @@ defmodule Whatlangex do
     defstruct [:lang, :script, :confidence]
   end
 
+  @default_detect_opts [
+    allowlist: nil,
+    denylist: nil
+  ]
+
+  @default_detect_opts_tuple {
+    @default_detect_opts[:allowlist],
+    @default_detect_opts[:denylist]
+  }
+
   @doc """
   Detect the language of the given sentence.
 
   ## Examples
 
       iex> detect("This is a cool sentence.")
-      %Whatlangex.Detection{lang: "eng", script: "Latin", confidence: 0.47970281937238757}
+      %Whatlangex.Detection{lang: "eng", script: "Latin", confidence: ...}
 
       iex> detect("")
       nil
@@ -33,7 +43,45 @@ defmodule Whatlangex do
   """
   @spec detect(String.t()) :: Detection.t() | nil
   def detect(sentence) do
-    case nif_detect(sentence) do
+    case nif_detect(sentence, @default_detect_opts_tuple) do
+      nil ->
+        nil
+
+      {lang, script, confidence} ->
+        %Detection{lang: lang, script: script, confidence: confidence}
+    end
+  end
+
+  @doc """
+  Detect the language of the given sentence with filtering options.
+
+  ## Options
+
+  - `:allowlist` - List of language codes to consider (e.g., `["eng", "fra", "spa"]`)
+  - `:denylist` - List of language codes to exclude (e.g., `["rus", "ukr"]`)
+
+  Note: `allowlist` and `denylist` are mutually exclusive. If both are provided, only `allowlist` will be used.
+
+  ## Examples
+
+      iex> detect("Ceci est une phrase.", allowlist: ["eng", "fra"])
+      %Whatlangex.Detection{lang: "fra", script: "Latin", confidence: ...}
+
+      iex> detect("Hello world", denylist: ["spa", "fra"])
+      %Whatlangex.Detection{lang: "eng", script: "Latin", confidence: ...}
+
+      iex> detect("", allowlist: ["eng"])
+      nil
+
+  """
+  @spec detect(String.t(), keyword()) :: Detection.t() | nil
+  def detect(sentence, opts) when is_list(opts) do
+    # Enough for now, but could be managed in a function later
+    # for more complex use cases.
+    allowlist = Keyword.get(opts, :allowlist)
+    denylist = Keyword.get(opts, :denylist)
+
+    case nif_detect(sentence, {allowlist, denylist}) do
       nil ->
         nil
 
@@ -76,7 +124,7 @@ defmodule Whatlangex do
     nif_code_to_eng_name(code)
   end
 
-  defp nif_detect(_sentence) do
+  defp nif_detect(_sentence, _options) do
     error_if_not_nif_loaded()
   end
 

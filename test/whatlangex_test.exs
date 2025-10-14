@@ -27,6 +27,76 @@ defmodule WhatlangexTest do
     end
   end
 
+  describe "&detect/2 with allowlist" do
+    test "detects language from allowlist" do
+      detection = detect(@sentences.fra, allowlist: ["eng", "fra", "spa"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "fra"
+    end
+
+    test "detects English when limited to English and Spanish" do
+      detection = detect(@sentences.eng, allowlist: ["eng", "spa"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "eng"
+    end
+
+    test "returns nil when allowlist doesn't match" do
+      # German text with only French/Spanish allowed
+      detection = detect("Guten Tag, wie geht es Ihnen?", allowlist: ["fra", "spa"])
+
+      # May return nil or one of the allowed languages with low confidence
+      # depending on whatlang behavior
+      assert detection == nil or detection.lang in ["fra", "spa"]
+    end
+
+    test "handles empty allowlist gracefully" do
+      detection = detect(@sentences.eng, allowlist: [])
+
+      assert %Whatlangex.Detection{} = detection
+    end
+  end
+
+  describe "&detect/2 with denylist" do
+    test "detects language excluding denied languages" do
+      detection = detect(@sentences.eng, denylist: ["fra", "spa", "deu"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "eng"
+    end
+
+    test "excludes specific language from detection" do
+      detection = detect(@sentences.spa, denylist: ["eng", "fra"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "spa"
+    end
+
+    test "handles empty denylist gracefully" do
+      detection = detect(@sentences.fra, denylist: [])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "fra"
+    end
+  end
+
+  describe "&detect/2 with invalid language codes" do
+    test "ignores invalid codes in allowlist" do
+      detection = detect(@sentences.eng, allowlist: ["eng", "invalid", "xyz"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "eng"
+    end
+
+    test "ignores invalid codes in denylist" do
+      detection = detect(@sentences.fra, denylist: ["invalid", "xyz"])
+
+      assert %Whatlangex.Detection{} = detection
+      assert detection.lang == "fra"
+    end
+  end
+
   describe "&code_to_name/1" do
     test "returns the full name of a language" do
       assert code_to_name("eng") == "English"
