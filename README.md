@@ -7,6 +7,8 @@
 - Elixir `1.15` or more
 - Erlang OTP `24` or more
 
+> **Note:** This project is developed and tested with Elixir `1.18.4` and Erlang OTP `28`. Please open an issue if backward compatibilities with the minimum versions listed above are not respected.
+
 ## Installation
 
 The package can be installed by adding `whatlangex` to your list of dependencies in `mix.exs`:
