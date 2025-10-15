@@ -50,7 +50,7 @@ iex> Whatlangex.detect("Bonjour le monde", denylist: ["eng", "deu"])
 %Whatlangex.Detection{lang: "fra", script: "Latin", confidence: ...}
 ```
 
-**Note:** `allowlist` and `denylist` are mutually exclusive. If both are provided, only `allowlist` will be used.
+**Note:** `allowlist` and `denylist` are mutually exclusive. If both are provided, `allowlist` takes precedence and `denylist` is ignored.
 
 ### Language code conversion
 

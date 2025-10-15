@@ -42,19 +42,16 @@ defmodule WhatlangexTest do
       assert detection.lang == "eng"
     end
 
-    test "returns nil when allowlist doesn't match" do
-      # German text with only French/Spanish allowed
+    test "returns another lang when allowlist doesn't match" do
       detection = detect("Guten Tag, wie geht es Ihnen?", allowlist: ["fra", "spa"])
 
-      # May return nil or one of the allowed languages with low confidence
-      # depending on whatlang behavior
-      assert detection == nil or detection.lang in ["fra", "spa"]
+      assert detection.lang in ["fra", "spa"]
     end
 
-    test "handles empty allowlist gracefully" do
+    test "empty allowlist returns nil" do
       detection = detect(@sentences.eng, allowlist: [])
 
-      assert %Whatlangex.Detection{} = detection
+      assert detection == nil
     end
   end
 
@@ -108,14 +105,7 @@ defmodule WhatlangexTest do
     test "denylist is ignored when allowlist is present" do
       detection = detect(@sentences.fra, allowlist: ["spa", "deu"], denylist: ["fra"])
 
-      assert detection == nil or detection.lang in ["spa", "deu"]
-    end
-
-    test "both empty lists behave as no filtering" do
-      detection = detect(@sentences.spa, allowlist: [], denylist: [])
-
-      assert %Whatlangex.Detection{} = detection
-      assert detection.lang == "spa"
+      assert detection.lang in ["spa", "deu"]
     end
 
     test "allowlist with value takes precedence over empty denylist" do
@@ -125,11 +115,16 @@ defmodule WhatlangexTest do
       assert detection.lang == "eng"
     end
 
-    test "empty allowlist with denylist value uses denylist" do
+    test "empty allowlist with denylist behave as allowlist filtering" do
       detection = detect(@sentences.fra, allowlist: [], denylist: ["eng", "spa"])
 
-      assert %Whatlangex.Detection{} = detection
-      assert detection.lang == "fra"
+      assert detection == nil
+    end
+
+    test "both empty lists behave as allowlist filtering" do
+      detection = detect(@sentences.spa, allowlist: [], denylist: [])
+
+      assert detection == nil
     end
 
     test "conflicting options with overlapping languages" do

@@ -47,23 +47,15 @@ fn build_detector(options: DetectOpts) -> whatlang::Detector {
     match (options.allowlist, options.denylist) {
         // Default: no filtering
         (None, None) => whatlang::Detector::new(),
-        // Allowlist takes precedence
+        // Apply allowlist (takes precedence)
         (Some(codes), _) => {
             let langs = codes_to_langs(&codes);
-            if !langs.is_empty() {
-                whatlang::Detector::with_allowlist(langs)
-            } else {
-                whatlang::Detector::new()
-            }
+            whatlang::Detector::with_allowlist(langs)
         }
-        // Denylist if no allowlist
+        // Apply denylist (if no allowlist)
         (None, Some(codes)) => {
             let langs = codes_to_langs(&codes);
-            if !langs.is_empty() {
-                whatlang::Detector::with_denylist(langs)
-            } else {
-                whatlang::Detector::new()
-            }
+            whatlang::Detector::with_denylist(langs)
         }
     }
 }
