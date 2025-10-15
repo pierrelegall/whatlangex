@@ -17,14 +17,12 @@ struct Detection {
 }
 
 #[rustler::nif]
-fn nif_detect(sentence: &str, options: DetectOpts) -> Option<Detection> {
-    build_detector(options)
-        .detect(sentence)
-        .map(|info| Detection {
-            lang: String::from(info.lang().code()),
-            script: String::from(info.script().name()),
-            confidence: info.confidence() as f64,
-        })
+fn nif_detect(sentence: &str, opts: DetectOpts) -> Option<Detection> {
+    build_detector(opts).detect(sentence).map(|info| Detection {
+        lang: String::from(info.lang().code()),
+        script: String::from(info.script().name()),
+        confidence: info.confidence() as f64,
+    })
 }
 
 #[rustler::nif]
@@ -43,8 +41,8 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
     }
 }
 
-fn build_detector(options: DetectOpts) -> whatlang::Detector {
-    match (options.allowlist, options.denylist) {
+fn build_detector(opts: DetectOpts) -> whatlang::Detector {
+    match (opts.allowlist, opts.denylist) {
         // Default: no filtering
         (None, None) => whatlang::Detector::new(),
         // Apply allowlist (takes precedence)
