@@ -42,16 +42,25 @@ fn nif_code_to_eng_name(code: &str) -> Option<&str> {
 }
 
 fn build_detector(opts: DetectOpts) -> whatlang::Detector {
-    match (opts.allowlist, opts.denylist) {
-        // Default: no filtering
-        (None, None) => whatlang::Detector::new(),
+    match opts {
+        // Default: no filtering (most common case)
+        DetectOpts {
+            allowlist: None,
+            denylist: None,
+        } => whatlang::Detector::new(),
         // Apply allowlist (takes precedence)
-        (Some(codes), _) => {
+        DetectOpts {
+            allowlist: Some(codes),
+            ..
+        } => {
             let langs = codes_to_langs(&codes);
             whatlang::Detector::with_allowlist(langs)
         }
         // Apply denylist (if no allowlist)
-        (None, Some(codes)) => {
+        DetectOpts {
+            allowlist: None,
+            denylist: Some(codes),
+        } => {
             let langs = codes_to_langs(&codes);
             whatlang::Detector::with_denylist(langs)
         }
