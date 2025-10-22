@@ -21,7 +21,7 @@ defmodule Whatlangex do
 
   defmodule DetectOpts do
     @moduledoc """
-    Options for language detection filtering.
+    Options struct and keywords schema for the `detect` function.
     """
 
     @type t :: %__MODULE__{
@@ -30,6 +30,36 @@ defmodule Whatlangex do
           }
 
     defstruct allowlist: nil, denylist: nil
+
+    @keywords_schema [
+      allowlist: [
+        doc: "List of language codes to consider (e.g., `[\"eng\", \"fra\", \"spa\"]`)",
+        type: {:or, [nil, {:list, :string}]},
+        default: nil
+      ],
+      denylist: [
+        doc: "List of language codes to exclude (e.g., `[\"rus\", \"ukr\"]`)",
+        type: {:or, [nil, {:list, :string}]},
+        default: nil
+      ]
+    ]
+
+    def validate_keywords!(opts) do
+      NimbleOptions.validate!(opts, @keywords_schema)
+    end
+
+    def from_keywords!(opts) do
+      validated_opts = DetectOpts.validate_keywords!(opts)
+
+      %DetectOpts{
+        allowlist: validated_opts[:allowlist],
+        denylist: validated_opts[:denylist]
+      }
+    end
+
+    def docs_for_keywords do
+      NimbleOptions.docs(@keywords_schema)
+    end
   end
 
   @doc """
@@ -54,8 +84,7 @@ defmodule Whatlangex do
 
   ## Options
 
-  - `:allowlist` - List of language codes to consider (e.g., `["eng", "fra", "spa"]`)
-  - `:denylist` - List of language codes to exclude (e.g., `["rus", "ukr"]`)
+  #{DetectOpts.docs_for_keywords()}
 
   Note: `allowlist` and `denylist` are mutually exclusive. If both are provided, only `allowlist` will be used.
 
@@ -73,12 +102,9 @@ defmodule Whatlangex do
   """
   @spec detect(String.t(), keyword()) :: Detection.t() | nil
   def detect(sentence, opts) when is_list(opts) do
-    options = %DetectOpts{
-      allowlist: Keyword.get(opts, :allowlist),
-      denylist: Keyword.get(opts, :denylist)
-    }
+    opts = DetectOpts.from_keywords!(opts)
 
-    nif_detect(sentence, options)
+    nif_detect(sentence, opts)
   end
 
   @doc """
@@ -115,7 +141,7 @@ defmodule Whatlangex do
     nif_code_to_eng_name(code)
   end
 
-  defp nif_detect(_sentence, _options) do
+  defp nif_detect(_sentence, _opts) do
     error_if_not_nif_loaded()
   end
 

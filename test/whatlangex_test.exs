@@ -53,6 +53,16 @@ defmodule WhatlangexTest do
 
       assert detection == nil
     end
+
+    test "raise with bad options" do
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: "eng")
+      end
+
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: ["eng", 123])
+      end
+    end
   end
 
   describe "&detect/2 with denylist" do
@@ -75,6 +85,16 @@ defmodule WhatlangexTest do
 
       assert %Whatlangex.Detection{} = detection
       assert detection.lang == "fra"
+    end
+
+    test "raise with bad options" do
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, denylist: "eng")
+      end
+
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, denylist: ["eng", 123])
+      end
     end
   end
 
@@ -133,6 +153,24 @@ defmodule WhatlangexTest do
 
       assert %Whatlangex.Detection{} = detection
       assert detection.lang == "fra"
+    end
+
+    test "raise with bad options" do
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: ["eng"], denylist: "fra")
+      end
+
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: "eng", denylist: ["fra"])
+      end
+
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: ["eng", 123], denylist: ["fra"])
+      end
+
+      assert_raise NimbleOptions.ValidationError, fn ->
+        Whatlangex.detect(@sentences.eng, allowlist: "eng", denylist: ["fra", 123])
+      end
     end
   end
 
