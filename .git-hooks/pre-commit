@@ -1,11 +1,30 @@
-#!/bin/sh
-#
+#!/usr/bin/env sh
+
 # Pre-commit hook
 
 set -e
 
-STAGED_FILES=$(git diff --name-only --cached)
+echo "Checking Mise setup..."
+mise_bin=$(command -pv mise)
+if [ -f $mise_bin ]; then
+  eval "$($mise_bin activate bash)"
+  echo "Ok."
+else
+  echo "Mise is not setup on your system, things may not work as expected."
+fi
+echo
 
-mix test
+echo "Checking Elixir code format..."
+staged_elixir_files=$(git diff --name-only --cached | grep -E '\.(ex|exs)$' || true)
+if [ -n "$staged_elixir_files" ]; then
+  mix format --check-formatted $staged_elixir_files
+fi
+echo
+
+echo "Checking Credo rules..."
 mix credo --strict
-mix format --check-formatted $STAGED_FILES
+echo
+
+echo "Checking tests..."
+mix test
+echo
