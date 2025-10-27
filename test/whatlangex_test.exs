@@ -3,6 +3,8 @@ defmodule WhatlangexTest do
 
   import Whatlangex
 
+  alias Whatlangex.Detection
+
   @sentences %{
     eng: "Start with a simple sentence, it's good enough for now.",
     fra: "Commence avec une phrase simple, ça suffit pour le moment.",
@@ -14,7 +16,7 @@ defmodule WhatlangexTest do
       for {_lang, sentence} <- @sentences do
         detection = detect(sentence)
 
-        assert %Whatlangex.Detection{} = detection
+        assert %Detection{} = detection
         assert detection.lang =~ ~r/^...$/
         assert is_binary(detection.script)
         assert detection.confidence >= 0
@@ -31,14 +33,14 @@ defmodule WhatlangexTest do
     test "detects language from allowlist" do
       detection = detect(@sentences.fra, allowlist: ["eng", "fra", "spa"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "fra"
     end
 
     test "detects English when limited to English and Spanish" do
       detection = detect(@sentences.eng, allowlist: ["eng", "spa"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "eng"
     end
 
@@ -55,18 +57,18 @@ defmodule WhatlangexTest do
     end
 
     test "act as no allowlist when nil given" do
-      detection = Whatlangex.detect(@sentences.eng, allowlist: nil)
+      detection = detect(@sentences.eng, allowlist: nil)
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
     end
 
     test "raise with bad options" do
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: "eng")
+        detect(@sentences.eng, allowlist: "eng")
       end
 
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: ["eng", 123])
+        detect(@sentences.eng, allowlist: ["eng", 123])
       end
     end
   end
@@ -75,37 +77,37 @@ defmodule WhatlangexTest do
     test "detects language excluding denied languages" do
       detection = detect(@sentences.eng, denylist: ["fra", "spa", "deu"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "eng"
     end
 
     test "excludes specific language from detection" do
       detection = detect(@sentences.spa, denylist: ["eng", "fra"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "spa"
     end
 
     test "handles empty denylist gracefully" do
       detection = detect(@sentences.fra, denylist: [])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "fra"
     end
 
     test "act as no allowlist when nil given" do
-      detection = Whatlangex.detect(@sentences.eng, denylist: nil)
+      detection = detect(@sentences.eng, denylist: nil)
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
     end
 
     test "raise with bad options" do
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, denylist: "eng")
+        detect(@sentences.eng, denylist: "eng")
       end
 
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, denylist: ["eng", 123])
+        detect(@sentences.eng, denylist: ["eng", 123])
       end
     end
   end
@@ -114,14 +116,14 @@ defmodule WhatlangexTest do
     test "ignores invalid codes in allowlist" do
       detection = detect(@sentences.eng, allowlist: ["eng", "invalid", "xyz"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "eng"
     end
 
     test "ignores invalid codes in denylist" do
       detection = detect(@sentences.fra, denylist: ["invalid", "xyz"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "fra"
     end
   end
@@ -130,7 +132,7 @@ defmodule WhatlangexTest do
     test "allowlist takes precedence when both are provided" do
       detection = detect(@sentences.eng, allowlist: ["eng", "fra"], denylist: ["eng", "spa"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "eng"
     end
 
@@ -143,7 +145,7 @@ defmodule WhatlangexTest do
     test "allowlist with value takes precedence over empty denylist" do
       detection = detect(@sentences.eng, allowlist: ["eng", "fra"], denylist: [])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "eng"
     end
 
@@ -163,25 +165,25 @@ defmodule WhatlangexTest do
       detection =
         detect(@sentences.fra, allowlist: ["eng", "fra", "spa"], denylist: ["fra", "deu"])
 
-      assert %Whatlangex.Detection{} = detection
+      assert %Detection{} = detection
       assert detection.lang == "fra"
     end
 
     test "raise with bad options" do
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: ["eng"], denylist: "fra")
+        detect(@sentences.eng, allowlist: ["eng"], denylist: "fra")
       end
 
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: "eng", denylist: ["fra"])
+        detect(@sentences.eng, allowlist: "eng", denylist: ["fra"])
       end
 
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: ["eng", 123], denylist: ["fra"])
+        detect(@sentences.eng, allowlist: ["eng", 123], denylist: ["fra"])
       end
 
       assert_raise NimbleOptions.ValidationError, fn ->
-        Whatlangex.detect(@sentences.eng, allowlist: "eng", denylist: ["fra", 123])
+        detect(@sentences.eng, allowlist: "eng", denylist: ["fra", 123])
       end
     end
   end
