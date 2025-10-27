@@ -54,6 +54,12 @@ defmodule WhatlangexTest do
       assert detection == nil
     end
 
+    test "act as no allowlist when nil given" do
+      detection = Whatlangex.detect(@sentences.eng, allowlist: nil)
+
+      assert %Whatlangex.Detection{} = detection
+    end
+
     test "raise with bad options" do
       assert_raise NimbleOptions.ValidationError, fn ->
         Whatlangex.detect(@sentences.eng, allowlist: "eng")
@@ -85,6 +91,12 @@ defmodule WhatlangexTest do
 
       assert %Whatlangex.Detection{} = detection
       assert detection.lang == "fra"
+    end
+
+    test "act as no allowlist when nil given" do
+      detection = Whatlangex.detect(@sentences.eng, denylist: nil)
+
+      assert %Whatlangex.Detection{} = detection
     end
 
     test "raise with bad options" do
