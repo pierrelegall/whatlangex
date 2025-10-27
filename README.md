@@ -16,7 +16,7 @@ The package can be installed by adding `whatlangex` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:whatlangex, "~> 0.3.0"}
+    {:whatlangex, "~> 0.4.0"}
   ]
 end
 ```

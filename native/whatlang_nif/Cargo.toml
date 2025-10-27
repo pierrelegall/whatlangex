@@ -1,6 +1,6 @@
 [package]
 name = "whatlang_nif"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Pierre Le Gall <pierre@legall.im>"]
 edition = "2024"
 
